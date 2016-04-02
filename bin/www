@@ -19,7 +19,7 @@ const server = http.createServer(app)
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
+const normalizePort = (val) => {
   const port = parseInt(val, 10)
 
   if (isNaN(port)) {
@@ -42,7 +42,7 @@ app.set('port', port)
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+const onError = (error) => {
   if (error.syscall !== 'listen') {
     throw error
   }
@@ -70,7 +70,7 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+const onListening = () => {
   const addr = server.address()
   const bind = typeof addr === 'string'
     ? `Pipe  ${addr}`
@@ -81,8 +81,6 @@ function onListening() {
 /**
  * Get port from environment and store in Express.
  */
-
-
 
 /**
  * Listen on provided port, on all network interfaces.
