@@ -7,6 +7,14 @@ import bodyParser from 'body-parser'
 
 import routes from './routes/index'
 import users from './routes/users'
+import helloworld from './routes/helloworld'
+
+// mongo
+
+// import mongo from 'mongodb'
+import monk from 'monk'
+
+const db = monk('localhost:27017/webapp1')
 
 const app = express()
 
@@ -22,8 +30,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// mongo
+app.use((req, res, next) => {
+  req.db = db
+  next()
+})
+
 app.use('/', routes)
 app.use('/users', users)
+app.use('/helloworld', helloworld)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

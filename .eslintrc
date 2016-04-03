@@ -9,6 +9,7 @@
     "arrow-body-style": [0],
     "react/jsx-no-bind": [0],
     "react/prefer-stateless-function" : [0],
-    "no-else-return": [0]
+    "no-else-return": [0],
+    no-param-reassign: ["error", { "props": false }]
   }
 }
