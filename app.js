@@ -5,16 +5,16 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 // import favicon from 'serve-favicon'
 
-import routes from './routes/index'
+import index from './routes/index'
 import users from './routes/users'
 import helloworld from './routes/helloworld'
 
 // mongo
 
-// import mongo from 'mongodb'
-import monk from 'monk'
+import mongoose from 'mongoose'
+import user from './models/user'
 
-const db = monk('localhost:27017/webapp1')
+mongoose.connect('mongodb://localhost:27017/webapp1')
 
 const app = express()
 
@@ -30,13 +30,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// mongo
 app.use((req, res, next) => {
-  req.db = db
+  console.log('something is happening')
   next()
 })
 
-app.use('/', routes)
+app.use('/', index)
 app.use('/users', users)
 app.use('/helloworld', helloworld)
 
