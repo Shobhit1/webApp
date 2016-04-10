@@ -1,21 +1,19 @@
-import $ from 'jquery'
+var $ = require('jquery')
 
 var userListData = []
 
-const populateTable = () => {
-  let tableContent = ''
+var populateTable = function () {
+  var tableContent = ''
 
-  $.getJSON('/users/userlist', (data) => {
-    $.each(data, () => {
+  $.getJSON('/users/userlist', function(data) {
+    $.each(data, function() {
       tableContent += '<tr>'
-      tableContent += `<td><a href="#" class="linkshowuser" rel="${this.username}"> ${this.username}</a></td>`
-      tableContent += `<td>${this.email}</td>`
-      tableContent += `<td><a href="#" class="linkdeleteuser" rel="${this._id}">Delete</a></td>`
+      tableContent += '<td><a href="#" class="linkshowuser" rel=' + this.username + '> ${this.username}</a></td>'
       tableContent += '</tr>'
     })
   })
 }
 
-$(document).ready(() => {
+$(document).ready(function() {
   populateTable()
 })
