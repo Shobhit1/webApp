@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-let userListData = []
+var userListData = []
 
 const populateTable = () => {
   let tableContent = ''
