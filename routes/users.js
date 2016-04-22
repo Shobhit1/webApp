@@ -11,10 +11,10 @@ router.get('/', function(req, res, next) {
   //console.log("Vivk")
   user.find(function(err, users){
     //console.log("oook")
-    if (error) {
+    if (err) {
           return res.
             status(status.INTERNAL_SERVER_ERROR).
-            json({ error: error.toString() })
+            json({ error: err.toString() })
     }
     res.json(users)
   })
@@ -80,11 +80,11 @@ router.put('/:email',function(req, res) {
     // userr.admin = req.body.admin
     // userr.password = req.body.password
     // Save the user and check for errors
-    userr[0].save(function(error) {
+    userr[0].save(function(err) {
       if (error) {
             return res.
               status(status.INTERNAL_SERVER_ERROR).
-              json({ error: error.toString() })
+              json({ error: err.toString() })
       }
 
       res.json(userr);
