@@ -1,7 +1,6 @@
-//GET /product/id/:id
-//GET /product/category/:id
-// GET /product/text/:query
-// PUT /product/:name
+//GET /products/name/:name
+//GET /products/category/:id
+// PUT /products/:name
 var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
@@ -10,7 +9,74 @@ var category = require('../models/category.js')
 var prod = require('../models/product.js')
 
 router.get('/', function(req, res, next) {
-  prod.find(function(err, prods){
+  prod.find({}).sort({
+      //skip:0, // Starting Row
+      //limit:10, // Ending Row
+
+          amount:1//Sort by Price Added DESC
+
+  }).exec(
+  function(err, prods){
+    if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json({ error: err.toString() })
+    }
+    res.json(prods)
+  })
+})
+// get products in Descending amount sort.
+router.get('/desc', function(req, res, next) {
+  prod.find({}).sort({
+      //skip:0, // Starting Row
+      //limit:10, // Ending Row
+
+          amount:-1//Sort by Price Added DESC
+
+  }).exec(
+  function(err, prods){
+    if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json({ error: err.toString() })
+    }
+    res.json(prods)
+  })
+})
+// get specific named product
+router.get('/:name', function(req, res, next) {
+  prod.find({name : req.params.name},function(err, prods){
+
+    if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json({ error: err.toString() })
+    }
+    res.json(prods)
+  })
+})
+
+// get specific category product in sorted Descending format
+router.get('/category/:id/desc', function(req, res, next) {
+  prod.find({_category : req.params.id}).sort({
+          amount:-1//Sort by Price Added DESC
+  }).exec(
+  function(err, prods){
+
+    if (err) {
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json({ error: err.toString() })
+    }
+    res.json(prods)
+  })
+})
+// get specific category product in sorted Ascending format OR Defualt
+router.get('/category/:id', function(req, res, next) {
+  prod.find({_category : req.params.id}).sort({
+          amount:1//Sort by Price Added DESC
+  }).exec(
+  function(err, prods){
 
     if (err) {
           return res.
@@ -55,7 +121,7 @@ router.put('/:name',function(req, res) {
     }
 
     // Update the existing info (whatever was editted)
-  
+
     // prodd.name = req.body.name
     // prodd.pictures = req.body.pictures
     // prodd.amount = req.body.amount
@@ -71,7 +137,7 @@ router.put('/:name',function(req, res) {
       }
 
       res.json(prodd);
-    });
-  });
-});
+    })
+  })
+})
 module.exports = router
