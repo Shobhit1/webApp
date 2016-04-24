@@ -1,8 +1,12 @@
 var mongoose = require('mongoose')
+var autoIncrement = require('mongoose-sequence')
 var Category = require('./category')
 var Schema = mongoose.Schema
 
-var productSchema = {
+var productSchema = new Schema({
+  pid:{
+    type:Number
+  },
   name:{
     type: String,
     required: true,
@@ -23,9 +27,9 @@ var productSchema = {
   _category: {
     type : Category.categorySchema
   }
-}
+})
 // Schema.index({ name: 'text' });
 var product = mongoose.model('Product', productSchema)
-
+productSchema.plugin(autoIncrement,{inc_field: 'pid'})
 
 module.exports = product
