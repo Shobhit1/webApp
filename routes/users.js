@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
 var status = require('http-status');
+var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var user = require('../models/user.js')
 /* GET users */
 
@@ -91,4 +92,34 @@ router.put('/:email',function(req, res) {
     });
   });
 });
+
+// accepts params as -x-www-form-urlencoded
+router.post('/authenticate', function(req, res) {
+    // find the user
+    user.findOne({
+        email: req.body.email
+    }, function(err, user) {
+        if (err) throw err;
+        if (!user) {
+            res.json({ success: false, message: 'Authentication failed. User not found.' });
+        } else if (user) {
+            // check if password matches
+            if (user.password != req.body.password) {
+                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+            } else {
+                // if user is found and password is right
+                // create a token
+                var token = jwt.sign(user, req.app.get('secretkey'), {
+                    expiresIn: 86400 // expires in 24 hours
+                });
+                res.json({
+                    success: true,
+                    message: 'Success!',
+                    token: token
+                });
+            }
+        }
+    });
+});
+
 module.exports = router
