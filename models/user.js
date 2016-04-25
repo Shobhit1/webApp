@@ -33,9 +33,23 @@ var userSchema = new Schema({
   },
   data: {
     //oauth: { type: String, required: true },
+    productsPurchased:[{
+      name: {
+        type: String,
+        unique:true
+      },
+      review:{
+        type:String,
+        default:""
+      },
+      rating:{
+        type:Number,
+        default: 1,
+      }
+    }],
     cart: [{
       product: {
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
       },
       quantity: {
         type: Number,

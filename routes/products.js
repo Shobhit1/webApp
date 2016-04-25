@@ -4,26 +4,47 @@
 var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
-var status = require('http-status');
+var status = require('http-status')
+var cache = require('../cache')
 var category = require('../models/category.js')
 var prod = require('../models/product.js')
-
+function microtime() {
+    var now = new Date().getTime() / 1000
+    var s = parseInt(now)
+    return (Math.round((now - s) * 1000) / 1000) + ' ' + s
+}
 router.get('/', function(req, res, next) {
-  prod.find({}).sort({
-      //skip:0, // Starting Row
-      //limit:10, // Ending Row
+  cache.get('mykey', function(error, result){
+      console.log("HIT",result)
 
-          amount:1//Sort by Price Added DESC
+      if(result == null)  {
+        result = microtime()
+        // cache.set('key', result)
+        prod.find({}).sort({
+            //skip:0, // Starting Row
+            //limit:10, // Ending Row
 
-  }).exec(
-  function(err, prods){
-    if (err) {
-          return res.
-            status(status.INTERNAL_SERVER_ERROR).
-            json({ error: err.toString() })
-    }
-    res.json(prods)
-  })
+                amount:1//Sort by Price Added DESC
+
+        }).exec(
+        function(err, prods){
+          if (err) {
+                return res.
+                  status(status.INTERNAL_SERVER_ERROR).
+                  json({ error: err.toString() })
+          }
+          cache.set('mykey',prods)
+          res.json(prods)
+
+        })
+        ////
+      }
+      else{
+        res.json(JSON.parse(result.mykey))
+      }
+      // res.json('index', {title: "Hello Express at " + result})
+    })
+
 })
 // get products in Descending amount sort.
 router.get('/desc', function(req, res, next) {

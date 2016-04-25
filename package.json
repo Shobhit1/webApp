@@ -16,8 +16,11 @@
     "jsonwebtoken": "^5.7.0",
     "mongodb": "^1.4.4",
     "mongoose": "^4.4.10",
+    "mongoose-sequence": "^3.0.2",
     "monk": "^1.0.1",
     "morgan": "~1.6.1",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "mongoose-sequence":"3.0.2",
+    "mc":"1.0.6"
   }
 }
