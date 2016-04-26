@@ -9,6 +9,7 @@ var routes = require('./routes/index')
 var users = require('./routes/users')
 var products = require('./routes/products')
 var orders = require('./routes/orders')
+var queries = require('./routes/queries')
 
 var app = express()
 // view engine setup
@@ -30,8 +31,9 @@ app.use('/', routes)
 app.use('/users', users)
 app.use('/products', products)
 app.use('/orders', orders)
+app.use('/contactus', queries)
 
-//memcache  
+//memcache
 cache.connect();
 
 // catch 404 and forward to error handler

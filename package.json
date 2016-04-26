@@ -21,6 +21,7 @@
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "mongoose-sequence":"3.0.2",
-    "mc":"1.0.6"
+    "mc":"1.0.6",
+    "nodemailer":"2.2.0"
   }
 }

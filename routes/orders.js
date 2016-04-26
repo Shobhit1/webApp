@@ -6,6 +6,40 @@ var category = require('../models/category.js')
 var prod = require('../models/product.js')
 var order = require('../models/orders.js')
 var user = require('../models/user.js')
+var nodemailer = require('nodemailer')
+function sentConfirmationEmail(req) {
+    // Not the movie transporter!
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'testcartt@gmail.com', // Your email id
+            pass: 'momisgreat1' // Your password
+        }
+    })
+    var text = 'Hello,'+req.body.email+' from Slick \n\n'+'Your order is Received'
+    var sentOrNot= false
+    var mailOptions = {
+        from: 'testcartt@gmail.com', // sender address
+        to: req.body.email, // list of receivers
+        subject: 'Order Confirmation', // Subject line
+        text: text //, // plaintext body
+        // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+    }
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log("Email Not Sent"+error);
+            //res.json({status: 'Email not Sent'})
+        }else{
+            console.log('Message sent: ' + info.response)
+            // res.json({
+            //   response: info.response,
+            //   status: 'Email Sent'
+            // })
+            sentOrNot = true
+        }
+    })
+    return sentOrNot
+}
 router.get('/', function(req, res, next) {
   order.find({}).sort({
       //skip:0, // Starting Row
@@ -39,9 +73,10 @@ router.post('/add',function(req, res, next) {
 
  ordNew.save(function(err) {
    if (err) {
-         return res.
-           status(status.INTERNAL_SERVER_ERROR).
-           json({ error: err.toString() })
+        //  return res.
+        //    status(status.INTERNAL_SERVER_ERROR).
+        //    json({ error: err.toString() })
+        console.log("Can't save the order in database")
    }
   //  user.findOneAndUpdate({email:req.body.email},
   //    { "$push": { "data.productsPurchased":req.body.data.products}},
@@ -60,12 +95,14 @@ router.post('/add',function(req, res, next) {
       }
     })
   }
-
+   var boolean_chack_email = sentConfirmationEmail(req)
+   console.log("Email Sent" + boolean_chack_email)
    res.json({
      message: 'Order initiated! Purchase made successfully',
      product : ordNew
     })
   })
+
 })
 
 module.exports = router

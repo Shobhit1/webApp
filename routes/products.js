@@ -109,7 +109,7 @@ router.get('/category/:id', function(req, res, next) {
 })
 
 router.post('/add',function(req, res, next) {
-  var prodNew = new prod();
+  var prodNew = new prod()
 
  // Set the product properties that came from the POST data
  prodNew.name = req.body.name
