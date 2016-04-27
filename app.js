@@ -67,5 +67,13 @@ app.use(function(err, req, res, next) {
   })
 })
 
+// redirect all http requests to https
+app.all('*', function(req, res, next){
+  if (req.secure) {
+    return next();
+  }
+  res.redirect('https://'+req.hostname+':'+app.get('port')+req.url);
+})
+
 
 module.exports = app
