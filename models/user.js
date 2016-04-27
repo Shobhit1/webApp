@@ -24,6 +24,10 @@ var userSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  failedLoginAttempt: {
+    type: Number,
+    default: 0
+  },
   active: {
     type: Boolean,
     default: false
