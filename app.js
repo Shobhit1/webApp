@@ -10,6 +10,7 @@ var users = require('./routes/users')
 var products = require('./routes/products')
 var orders = require('./routes/orders')
 var queries = require('./routes/queries')
+var reviews = require('./routes/reviews')
 
 var app = express()
 // view engine setup
@@ -32,7 +33,7 @@ app.use('/users', users)
 app.use('/products', products)
 app.use('/orders', orders)
 app.use('/contactus', queries)
-
+app.use('/reviews', reviews)
 //memcache
 cache.connect();
 

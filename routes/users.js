@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
-var status = require('http-status');
+var status = require('http-status')
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var user = require('../models/user.js')
 /* GET users */
@@ -82,16 +82,16 @@ router.put('/:email',function(req, res) {
     // userr.password = req.body.password
     // Save the user and check for errors
     userr[0].save(function(err) {
-      if (error) {
+      if (err) {
             return res.
               status(status.INTERNAL_SERVER_ERROR).
               json({ error: err.toString() })
       }
 
-      res.json(userr);
-    });
-  });
-});
+      res.json(userr)
+    })
+  })
+})
 
 // accepts params as -x-www-form-urlencoded
 router.post('/authenticate', function(req, res) {
