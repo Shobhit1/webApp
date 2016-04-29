@@ -115,7 +115,8 @@ router.post('/authenticate', function(req, res) {
                 res.json({
                     success: true,
                     message: 'Success!',
-                    token: token
+                    token: token,
+                    userData : user // change for only one request from front end on Login to get userData
                 });
             }
         }
