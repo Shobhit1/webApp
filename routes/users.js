@@ -112,7 +112,9 @@ router.post('/authenticate', function(req, res) {
 
                 res.json({ success: false, message: 'Authentication failed. Wrong password.' });
             } else {
-
+              //Last Login Time
+                user.lastLogin = Date()
+                user.save()
                 // clear the failedloginattempt count
                 if(user.failedLoginAttempt){
                     user.failedLoginAttempt = 0;
