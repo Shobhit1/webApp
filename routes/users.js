@@ -105,8 +105,19 @@ router.post('/authenticate', function(req, res) {
         } else if (user) {
             // check if password matches
             if (user.password != req.body.password) {
+
+                // update the failedloginattempt count
+                user.failedLoginAttempt++;
+                user.save()
+
                 res.json({ success: false, message: 'Authentication failed. Wrong password.' });
             } else {
+
+                // clear the failedloginattempt count
+                if(user.failedLoginAttempt){
+                    user.failedLoginAttempt = 0;
+                    user.save()
+                }
                 // if user is found and password is right
                 // create a token
                 var token = jwt.sign(user, req.app.get('secretkey'), {
