@@ -31,7 +31,7 @@ router.put('/edit',function(req, res) {
 
     // Update the existing info (whatever was editted)
     //userr[0].first_name = req.body.first_name
-    console.log("Vivek"+userr)
+    //console.log("Vivek"+userr)
     userr[0].first_name = userr[0].first_name+""
     userr[0].last_name = userr[0].last_name+""
     for(var i=0;i<userr[0].data.productsPurchased.length;i++){

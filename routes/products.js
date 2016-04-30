@@ -151,10 +151,10 @@ router.put('/:name',function(req, res) {
 
     // Save the user and check for errors
     return prodd[0].save(function(err) {
-      if (error) {
+      if (err) {
             return res.
               status(status.INTERNAL_SERVER_ERROR).
-              json({ error: error.toString() })
+              json({ error: err.toString() })
       }
 
       res.json(prodd);
