@@ -73,13 +73,15 @@ router.get('/:name', function(req, res, next) {
             status(status.INTERNAL_SERVER_ERROR).
             json({ error: err.toString() })
     }
+
     if(prods.length == 0){
       res.
         status(status.NOT_FOUND).
         json({ "statusCode": status.NOT_FOUND})
     }else{
-      res.json(prods)
+      res.json(prods[0])
     }
+
   })
 })
 
