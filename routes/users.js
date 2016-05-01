@@ -101,7 +101,7 @@ router.post('/authenticate', function(req, res) {
     }, function(err, user) {
         if (err) throw err;
         if (!user) {
-            res.status(status.NOT_FOUND).json({ success: false, message: 'Authentication failed. User not found.' });
+            res.json({ success: false, message: 'Authentication failed. User not found.' }) // res.status(status.UNAUTHORIZED).json(...)
         } else if (user) {
             // check if password matches
             if (user.password != req.body.password) {
@@ -110,7 +110,7 @@ router.post('/authenticate', function(req, res) {
                 user.failedLoginAttempt++;
                 user.save()
 
-                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+                res.json({ success: false, message: 'Authentication failed. Wrong password.' })
             } else {
               //Last Login Time
                 user.lastLogin = Date()
