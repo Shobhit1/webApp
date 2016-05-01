@@ -73,7 +73,7 @@ router.get('/:name', function(req, res, next) {
             status(status.INTERNAL_SERVER_ERROR).
             json({ error: err.toString() })
     }
-    res.json(prods)
+    res.json(prods[0])
   })
 })
 
