@@ -76,7 +76,7 @@ router.put('/:email',function(req, res) {
 
     // Update the existing info (whatever was editted)
     userr[0].first_name = req.body.first_name
-    //userr.last_name = req.body.last_name
+    userr[0].last_name = req.body.last_name
     //userr.email = req.body.email
     // userr.admin = req.body.admin
     // userr.password = req.body.password
@@ -101,7 +101,7 @@ router.post('/authenticate', function(req, res) {
     }, function(err, user) {
         if (err) throw err;
         if (!user) {
-            res.json({ success: false, message: 'Authentication failed. User not found.' });
+            res.status(status.NOT_FOUND).json({ success: false, message: 'Authentication failed. User not found.' });
         } else if (user) {
             // check if password matches
             if (user.password != req.body.password) {
