@@ -33,9 +33,8 @@ router.get('/', function(req, res, next) {
                   status(status.INTERNAL_SERVER_ERROR).
                   json({ error: err.toString() })
           }
-          cache.set('mykey',prods)
+          cache.set('mykey',JSON.stringify(prods))
           res.json(prods)
-
         })
         ////
       }
