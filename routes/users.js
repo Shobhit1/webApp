@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
-var status = require('http-status');
+var status = require('http-status')
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var user = require('../models/user.js')
 /* GET users */
@@ -76,22 +76,22 @@ router.put('/:email',function(req, res) {
 
     // Update the existing info (whatever was editted)
     userr[0].first_name = req.body.first_name
-    //userr.last_name = req.body.last_name
+    userr[0].last_name = req.body.last_name
     //userr.email = req.body.email
     // userr.admin = req.body.admin
     // userr.password = req.body.password
     // Save the user and check for errors
     userr[0].save(function(err) {
-      if (error) {
+      if (err) {
             return res.
               status(status.INTERNAL_SERVER_ERROR).
               json({ error: err.toString() })
       }
 
-      res.json(userr);
-    });
-  });
-});
+      res.json(userr)
+    })
+  })
+})
 
 // accepts params as -x-www-form-urlencoded
 router.post('/authenticate', function(req, res) {
@@ -101,12 +101,31 @@ router.post('/authenticate', function(req, res) {
     }, function(err, user) {
         if (err) throw err;
         if (!user) {
-            res.json({ success: false, message: 'Authentication failed. User not found.' });
+            res.status(403).send({
+                success: false,
+                message: 'Authentication failed. User not found.'
+            })
         } else if (user) {
             // check if password matches
             if (user.password != req.body.password) {
-                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+
+                // update the failedloginattempt count
+                user.failedLoginAttempt++;
+                user.save()
+
+                res.status(403).send({
+                    success: false,
+                    message: 'Authentication failed. Wrong password.'
+                })
             } else {
+              //Last Login Time
+                user.lastLogin = Date()
+                user.save()
+                // clear the failedloginattempt count
+                if(user.failedLoginAttempt){
+                    user.failedLoginAttempt = 0;
+                    user.save()
+                }
                 // if user is found and password is right
                 // create a token
                 var token = jwt.sign(user, req.app.get('secretkey'), {
@@ -115,7 +134,8 @@ router.post('/authenticate', function(req, res) {
                 res.json({
                     success: true,
                     message: 'Success!',
-                    token: token
+                    token: token,
+                    userData : user // change for only one request from front end on Login to get userData
                 });
             }
         }

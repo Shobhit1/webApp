@@ -8,7 +8,7 @@ var order = require('../models/orders.js')
 var user = require('../models/user.js')
 var nodemailer = require('nodemailer')
 function sentConfirmationEmail(req) {
-    // Not the movie transporter!
+
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -22,8 +22,8 @@ function sentConfirmationEmail(req) {
         from: 'testcartt@gmail.com', // sender address
         to: req.body.email, // list of receivers
         subject: 'Order Confirmation', // Subject line
-        text: text //, // plaintext body
-        // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+        text: text
+        // html: '<b>Hello world ✔</b>'
     }
     transporter.sendMail(mailOptions, function(error, info){
         if(error){
@@ -99,7 +99,7 @@ router.post('/add',function(req, res, next) {
    console.log("Email Sent" + boolean_chack_email)
    res.json({
      message: 'Order initiated! Purchase made successfully',
-     product : ordNew
+     order : ordNew
     })
   })
 
