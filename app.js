@@ -31,7 +31,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 // uses gzip by default
-app.use(compression()) // responses will be have a attribute 'content-encoding' - gzip
+app.use(compression({ threshold: 0 })) // responses will be have a attribute 'content-encoding' - gzip
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
   next()
 })
 
-/*app.use(function(req, res, next) {
+app.use(function(req, res, next) {
   var getToken = function(req){
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
       return req.headers.authorization.split(' ')[1];
@@ -79,7 +79,7 @@ app.use(function(req, res, next) {
     });
 
   }
-});*/
+});
 
 app.use('/', routes)
 app.use('/users', users)
