@@ -99,47 +99,52 @@ router.post('/authenticate', function(req, res) {
     user.findOne({
         email: req.body.email
     }, function(err, user) {
-        if (err) throw err;
+        if (err) throw err
         if (!user) {
             res.status(403).send({
+              data: {
                 success: false,
                 message: 'Authentication failed. User not found.'
+              }
             })
         } else if (user) {
             // check if password matches
             if (user.password != req.body.password) {
 
                 // update the failedloginattempt count
-                user.failedLoginAttempt++;
+                user.failedLoginAttempt++
                 user.save()
 
-                res.status(403).send({
-                    success: false,
-                    message: 'Authentication failed. Wrong password.'
-                })
+                res.status(403).send(
+                  {
+                    data: {
+                      success: false,
+                      message: 'Authentication failed. Wrong password.'
+                    }
+                  })
             } else {
-              //Last Login Time
-                user.lastLogin = Date()
-                user.save()
-                // clear the failedloginattempt count
-                if(user.failedLoginAttempt){
-                    user.failedLoginAttempt = 0;
-                    user.save()
-                }
                 // if user is found and password is right
                 // create a token
                 var token = jwt.sign(user, req.app.get('secretkey'), {
                     expiresIn: 86400 // expires in 24 hours
-                });
+                })
                 res.json({
                     success: true,
                     message: 'Success!',
                     token: token,
                     userData : user // change for only one request from front end on Login to get userData
-                });
+                })
+                //Last Login Time
+                  user.lastLogin = Date()
+                  user.save()
+                  // clear the failedloginattempt count
+                  if(user.failedLoginAttempt){
+                      user.failedLoginAttempt = 0
+                      user.save()
+                  }
             }
         }
-    });
-});
+    })
+})
 
 module.exports = router

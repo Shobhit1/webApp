@@ -36,10 +36,16 @@ app.use(compression({ threshold: 0 })) // responses will be have a attribute 'co
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Key, Content-Encoding")
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   next()
 })
 
 app.use(function(req, res, next) {
+  if(req.method === 'OPTIONS') {
+    next()
+    return
+  }
+
   var getToken = function(req){
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
       return req.headers.authorization.split(' ')[1];
@@ -48,7 +54,6 @@ app.use(function(req, res, next) {
     }
     return null;
   };
-
   // check header or url parameters or post parameters for token
   var token = getToken(req) // req.body.token || req.query.token || req.headers['x-access-token'];
 
