@@ -35,11 +35,11 @@ app.use(compression()) // responses will be have a attribute 'content-encoding' 
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Key")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Key, Content-Encoding")
   next()
 })
 
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
   var getToken = function(req){
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
       return req.headers.authorization.split(' ')[1];
@@ -79,7 +79,7 @@ app.use(function(req, res, next) {
     });
 
   }
-});
+});*/
 
 app.use('/', routes)
 app.use('/users', users)
